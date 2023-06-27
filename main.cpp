@@ -102,9 +102,9 @@ int main(){
         if(!exitFlag){
             vector<string> parsedCmd = parse_command(cmd);
             // cout << cmd;
-            // for (const auto& token : parsedCmd) {
-            //     cout << token << " ";
-            // }
+            for (const auto& token : parsedCmd) {
+                cout << token << " ";
+            }
             if (parsedCmd.size() > 0 && parsedCmd[0] == "exit") {
                 exitFlag = true;
             }
@@ -113,7 +113,7 @@ int main(){
                 //     execute_bg(parsedCmd);
                 // } else
                 if (parsedCmd[0] == "echo") {
-                    echoCommand(parsedCmd);
+                    echoCommand(vector<string>(parsedCmd.begin() + 1, parsedCmd.end()));
                 } else {
                     // Handle other commands
                     cout << "Command not recognized" << endl;

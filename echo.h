@@ -3,7 +3,8 @@
 
 #include <vector>
 #include <string>
+using namespace std;
 
-void echoCommand(const std::vector<std::string>& tokens);
+void echoCommand(const vector<string>& tokens);
 
 #endif
