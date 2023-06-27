@@ -2,7 +2,24 @@
 #include <iostream>
 #include <string>
 #include "shell.h"
+#include "bg.h"
+#include "echo.h"
 using namespace std;
+
+vector<string> parse_command(const string& command) {
+    string commandCopy = command; 
+    vector<string> tokens;
+    string delimiter = " ";
+    size_t pos = 0;
+    string token;
+    while ((pos = commandCopy.find(delimiter)) != string::npos) {
+        token = commandCopy.substr(0, pos);
+        tokens.push_back(token);
+        commandCopy.erase(0, pos + delimiter.length());
+    }
+    tokens.push_back(commandCopy);
+    return tokens;
+}
 
 char *read_cmd(void)
 {
@@ -57,6 +74,7 @@ char *read_cmd(void)
 int main(){
     string cmd;
     bool exitFlag = false;
+    cout<<"****Welcome to Byteshell****"<<endl;
     do
     {
         print_prompt1();
@@ -80,9 +98,28 @@ int main(){
         {
             exitFlag = true;
         }
-        if(!exitFlag)
-            cout << cmd << endl;
 
+        if(!exitFlag){
+            vector<string> parsedCmd = parse_command(cmd);
+            // cout << cmd;
+            // for (const auto& token : parsedCmd) {
+            //     cout << token << " ";
+            // }
+            if (parsedCmd.size() > 0 && parsedCmd[0] == "exit") {
+                exitFlag = true;
+            }
+            if (!parsedCmd.empty() && !exitFlag) {
+                // if (parsedCmd[0] == "bg") {
+                //     execute_bg(parsedCmd);
+                // } else
+                if (parsedCmd[0] == "echo") {
+                    echoCommand(parsedCmd);
+                } else {
+                    // Handle other commands
+                    cout << "Command not recognized" << endl;
+                }
+            }
+        }
     } while (!exitFlag);
 
     return 0;
