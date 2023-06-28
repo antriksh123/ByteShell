@@ -4,7 +4,11 @@ ByteShell is a simple Linux shell implementation written in C++. It provides a c
 
 ## Description
 
-ByteShell is designed to simulate a basic Linux shell environment. It supports various shell commands such as `cd` (change directory), `echo` (display text), `pwd` (print working directory), and `exit` commands. The shell also handles basic error handling and provides a prompt for user input.
+A Linux shell is a command-line interface that allows users to interact with the operating system by executing commands. It acts as an intermediary between the user and the operating system, interpreting user input and executing the corresponding actions.
+
+ByteShell aims to replicate the functionality of a basic Linux shell. It provides a set of commands that users can enter to perform tasks such as navigating the file system, displaying information, and terminating the shell. The `cd` command allows users to change directories, `echo` displays text on the shell, `pwd` prints the current working directory, and exit terminates the shell.
+
+The shell also includes basic error handling to notify users if a command is not recognized or if a file or directory does not exist. Additionally, ByteShell provides a prompt to indicate that it is ready to accept user input.
 
 ## How to run the project
 
