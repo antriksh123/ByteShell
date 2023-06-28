@@ -17,6 +17,7 @@ The shell also includes basic error handling to notify users if a command is not
 3. Compile the code using the command: `g++ -o shell shell.cpp`
 4. Run the shell executable: `./shell`
 5. The ByteShell prompt will appear, and you can start entering commands.
+Note - You need to update the paths used in the current according to your local environment.
 
 ## Supported Commands
 
@@ -47,13 +48,15 @@ ByteShell supports the following commands:
 
 ## The working
 
-ByteShell operates in the following manner:
+ByteShell operates by accepting user input in the form of commands. Here's an overview of how each command works:
 
-- Change directory (`cd`) command: Allows users to navigate the file system.
-- Echo (`echo`) command: Displays text on the shell.
-- Print working directory (`pwd`) command: Prints the current working directory.
-- Basic error handling: Displays appropriate error messages for invalid commands or file/directory not found.
-- Command prompt: Provides a user-friendly prompt for entering commands.
+- **Change Directory (`cd`)**: The `cd` command allows users to change the current directory. ByteShell supports various options for navigating the file system. Users can change to the user's home directory (`cd ~`), root directory (`cd /`), or move up one directory (`cd ..`). Additionally, users can change to a specific directory by entering its name (`cd directory_name`). If the directory does not exist, ByteShell displays an appropriate error message.
+
+- **Echo (`echo`)**: The `echo` command displays text on the shell. ByteShell supports different options for echoing text. Users can display text (`echo "Hello, world!"`), display text without a trailing newline (`echo -n "Hello"`), or disable the interpretation of backslashes (`echo -E "ab\c"`). ByteShell also handles cases where a user input spans multiple lines, allowing for continued input with the `>` prompt.
+
+- **Print Working Directory (`pwd`)**: The `pwd` command prints the current working directory. ByteShell retrieves the current working directory using the `getcwd()` function and displays it on the shell.
+
+- **Exit**: The `exit` command terminates the shell and exits the program.
 
 ## Key Takeaways
 
