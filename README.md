@@ -25,7 +25,7 @@ ByteShell supports the following commands:
 
 - `cd ~`: Change to the user's home directory.
 - `cd /`: Change to the root directory.
-- `cd`: Change to the default directory (C:\Users\Antriksh in your implementation).
+- `cd`: Change to the default directory (C:\Users\Antriksh in my implementation).
 - `cd .`: Stay in the current directory.
 - `cd ..`: Move up one directory.
 - `cd ar`: Change to the directory named "ar" if it exists.
