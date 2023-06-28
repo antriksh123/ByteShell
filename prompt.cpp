@@ -1,6 +1,5 @@
 #include <iostream>
-#include <bits/stdc++.h>
-#include "shell.h"
+#include <string>
 using namespace std;
 
 void print_prompt1()
