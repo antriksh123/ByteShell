@@ -1,19 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h> 
+#include <iostream>
+#include <cstdlib>
+#include <unistd.h>
+using namespace std;
 
-char *path()
+string path()
 {
     char directory[1024];
     char *t;
+    // getcwd -> get the current working directory 
     if (getcwd(directory, sizeof(directory)) == NULL)
     {
         perror("Error ");
-        return NULL;
+        return "";
     }
     else
     {
         t = getcwd(directory, sizeof(directory));
-        return t;
+        return string(t);
     }
 }
