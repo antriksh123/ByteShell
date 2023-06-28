@@ -30,7 +30,6 @@ ByteShell supports the following commands:
 - `echo -n abc`: Display "abc" on the shell without a trailing newline.
 - `echo “abc”`: Display "abc" on the shell.
 - `echo -E ab\c`: Display "ab\c" on the shell without interpreting backslashes.
-- `echo “ab\n>cd\n>bjkkl”`: Display "ab\n>cd\n>bjkkl" on the shell.
 
 - `pwd`: Print the current working directory.
 
