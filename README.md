@@ -44,7 +44,7 @@ ByteShell supports the following commands:
 
 - C++
 - Standard Library
-- Linux Shell
+- Windows Subsystem for Linux (WSL)
 
 ## The working
 
