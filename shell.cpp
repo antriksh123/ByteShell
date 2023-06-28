@@ -111,7 +111,7 @@ void execute_echo(const vector<string>& tokens)
 
         while (count % 2 != 0)
         {
-            cout << '>';
+            print_prompt2();
             cin.getline(inst, 1024);
             char *ptr;
 

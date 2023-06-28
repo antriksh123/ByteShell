@@ -6,7 +6,7 @@ using namespace std;
 string path()
 {
     char directory[1024];
-    char *t;
+    char *dir;
     // getcwd -> get the current working directory 
     if (getcwd(directory, sizeof(directory)) == NULL)
     {
@@ -15,7 +15,7 @@ string path()
     }
     else
     {
-        t = getcwd(directory, sizeof(directory));
-        return string(t);
+        dir = getcwd(directory, sizeof(directory));
+        return string(dir);
     }
 }
