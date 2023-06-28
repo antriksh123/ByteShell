@@ -8,36 +8,39 @@
 #include <fcntl.h>
 #include "path.cpp"
 #include "prompt.cpp"
+#include <vector>
 using namespace std;
 
 #define DELIMITER " \n\t\r"
 char st[1024][1024];
 int idx;
 
-void execute_cd(char **tokens)
+void execute_cd(const vector<string> &tokens)
 {
-    if (tokens[1] != nullptr && strcmp(tokens[1], "~") == 0)
+    if (!tokens.empty() && tokens[1] == "~")
     {
         chdir("C:\\Users\\Antriksh");
     }
-    else if (tokens[1] != nullptr && strcmp(tokens[1], "/") == 0)
+    else if (!tokens.empty() && tokens[1] == "/")
     {
         chdir("/");
     }
-    else if (tokens[1] == nullptr)
+    else if (tokens.empty())
     {
         chdir("C:\\Users\\Antriksh");
     }
-    else if (strcmp(tokens[1], "..") == 0)
-        chdir(tokens[1]);
+    else if (tokens[1] == "..")
+    {
+        chdir(tokens[1].c_str());
+    }
     else
     {
         struct stat buf;
-        stat(("%s/%s", path(), tokens[1]), &buf);
+        stat((path() + "/" + tokens[1]).c_str(), &buf);
 
-        if (chdir(tokens[1]) == 0)
-            chdir(tokens[1]);
-        else if (chdir(tokens[1]) == -1)
+        if (chdir(tokens[1].c_str()) == 0)
+            chdir(tokens[1].c_str());
+        else if (chdir(tokens[1].c_str()) == -1)
         {
             if (S_ISREG(buf.st_mode))
             {
@@ -56,16 +59,16 @@ void execute_exit()
     exit(1);
 }
 
-int helper_echo(char **tokens)
+int helper_echo(const vector<string>& tokens)
 {
     int k;
-    if (tokens[1] != nullptr && strcmp(tokens[1], "-n") == 0)
+    if (!tokens.empty() && tokens[1] == "-n")
     {
         k = 2;
     }
     else
         k = 1;
-    if (tokens[1] != nullptr && strcmp(tokens[1], "-E") == 0)
+    if (!tokens.empty() && tokens[1] == "-E")
     {
         k = 2;
     }
@@ -73,12 +76,12 @@ int helper_echo(char **tokens)
     int idx1 = 0;
     if (idx != 0)
         k = 0;
-    while (tokens[k] != nullptr)
+    while (k < tokens.size())
     {
         idx1 = 0;
-        for (int t = 0; t < strlen(tokens[k]); t++)
+        for (int t = 0; t < tokens[k].length(); t++)
         {
-            if (((tokens[k])[t]) != '"')
+            if (tokens[k][t] != '"')
             {
                 st[idx][idx1] = tokens[k][t];
                 idx1++;
@@ -97,7 +100,7 @@ int helper_echo(char **tokens)
     return count1;
 }
 
-void execute_echo(char **tokens)
+void execute_echo(const vector<string>& tokens)
 {
     idx = 0;
     int count = helper_echo(tokens);
@@ -118,23 +121,17 @@ void execute_echo(char **tokens)
             }
 
             int m = 0;
-            char **arr = new char *[1024];
+            vector<string> arr;
             char *c = strtok(inst, DELIMITER);
-            arr[m] = c;
-            m++;
-
             while (c != nullptr)
             {
+                arr.push_back(c);
                 c = strtok(nullptr, DELIMITER);
-                arr[m] = c;
-                m++;
             }
 
-            arr[m] = nullptr;
             st[idx][0] = '\n';
             idx++;
             count += helper_echo(arr);
-            delete[] arr;
         }
     }
     for (int y = 0; y < idx; y++)
@@ -150,7 +147,7 @@ void execute_echo(char **tokens)
         memset(st[y], '\0', strlen(st[y]));
     }
 
-    if (strcmp(tokens[1], "-n") != 0)
+    if (!tokens.empty() && tokens[1] != "-n")
     {
         cout << endl;
     }
@@ -170,46 +167,48 @@ void execute_pwd()
     }
 }
 
-void process_input(char *cmd)
+vector<string> tokenize_input(const string &input)
 {
-    if (strcmp(cmd, "\n") == 0)
+    vector<string> tokens;
+    size_t start = 0;
+    size_t end = 0;
+
+    while ((start = input.find_first_not_of(DELIMITER, end)) != string::npos)
+    {
+        end = input.find_first_of(DELIMITER, start);
+        tokens.push_back(input.substr(start, end - start));
+    }
+
+    return tokens;
+}
+
+void process_input(const string &cmd)
+{
+    if (cmd.empty())
     {
         return;
     }
-    char *pointer;
-    if ((pointer = strchr(cmd, '\n')) != nullptr)
+
+    vector<string> tokens = tokenize_input(cmd);
+
+    if (tokens.empty())
     {
-        *pointer = '\0';
+        return;
     }
 
-    int i = 0;
-    char **tokens = new char *[1024];
-    char *ch = strtok(cmd, DELIMITER);
-    tokens[i] = ch;
-    i++;
-
-    while (ch != nullptr)
-    {
-        ch = strtok(nullptr, DELIMITER);
-        tokens[i] = ch;
-        i++;
-    }
-
-    tokens[i] = nullptr;
-
-    if (strcmp(tokens[0], "cd") == 0)
+    if (tokens[0] == "cd")
     {
         execute_cd(tokens);
     }
-    else if (strcmp(tokens[0], "exit") == 0)
+    else if (tokens[0] == "exit")
     {
         execute_exit();
     }
-    else if (strcmp(tokens[0], "echo") == 0)
+    else if (tokens[0] == "echo")
     {
         execute_echo(tokens);
     }
-    else if (strcmp(tokens[0], "pwd") == 0)
+    else if (tokens[0] == "pwd")
     {
         execute_pwd();
     }
@@ -218,8 +217,6 @@ void process_input(char *cmd)
         cout << tokens[0] << ": command not found" << endl;
         exit(1);
     }
-
-    delete[] tokens;
 }
 
 int main(int argc, char const *argv[])
