@@ -17,7 +17,7 @@ The shell also includes basic error handling to notify users if a command is not
 3. Compile the code using the command: `g++ -o shell shell.cpp`
 4. Run the shell executable: `./shell`
 5. The ByteShell prompt will appear, and you can start entering commands.
-Note - You need to update the paths used in the current according to your local environment.
+6. **Note** - You need to update the paths used in the current according to your local environment.
 
 ## Supported Commands
 
