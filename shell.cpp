@@ -170,64 +170,67 @@ void execute_pwd()
     }
 }
 
+void process_input(char *cmd)
+{
+    if (strcmp(cmd, "\n") == 0)
+    {
+        return;
+    }
+    char *pointer;
+    if ((pointer = strchr(cmd, '\n')) != nullptr)
+    {
+        *pointer = '\0';
+    }
+
+    int i = 0;
+    char **tokens = new char *[1024];
+    char *ch = strtok(cmd, DELIMITER);
+    tokens[i] = ch;
+    i++;
+
+    while (ch != nullptr)
+    {
+        ch = strtok(nullptr, DELIMITER);
+        tokens[i] = ch;
+        i++;
+    }
+
+    tokens[i] = nullptr;
+
+    if (strcmp(tokens[0], "cd") == 0)
+    {
+        execute_cd(tokens);
+    }
+    else if (strcmp(tokens[0], "exit") == 0)
+    {
+        execute_exit();
+    }
+    else if (strcmp(tokens[0], "echo") == 0)
+    {
+        execute_echo(tokens);
+    }
+    else if (strcmp(tokens[0], "pwd") == 0)
+    {
+        execute_pwd();
+    }
+    else
+    {
+        cout << tokens[0] << ": command not found" << endl;
+        exit(1);
+    }
+
+    delete[] tokens;
+}
+
 int main(int argc, char const *argv[])
 {
     char cmd[1024];
-    int i;
-    int flag = 0;
     cout << "****Welcome to Byteshell****" << endl;
     while (true)
     {
         print_prompt1();
         cin.getline(cmd, 1024);
-        if (strcmp(cmd, "\n") == 0)
-        {
-            continue;
-        }
-        char *pointer;
-        if ((pointer = strchr(cmd, '\n')) != nullptr)
-        {
-            *pointer = '\0';
-        }
-
-        int i = 0;
-        char **tokens = new char *[1024];
-        char *ch = strtok(cmd, DELIMITER);
-        tokens[i] = ch;
-        i++;
-
-        while (ch != nullptr)
-        {
-            ch = strtok(nullptr, DELIMITER);
-            tokens[i] = ch;
-            i++;
-        }
-
-        tokens[i] = nullptr;
-
-        if (strcmp(tokens[0], "cd") == 0)
-        {
-            execute_cd(tokens);
-        }
-        else if (strcmp(tokens[0], "exit") == 0)
-        {
-            execute_exit();
-        }
-        else if (strcmp(tokens[0], "echo") == 0)
-        {
-            execute_echo(tokens);
-        }
-        else if (strcmp(tokens[0], "pwd") == 0)
-        {
-            execute_pwd();
-        }
-        else
-        {
-            cout << tokens[0] << ": command not found" << endl;
-            exit(1);
-        }
-
-        delete[] tokens;
+        process_input(cmd);
     }
 
     return 0;
